@@ -1,4 +1,6 @@
-/// What should the type of _function be?
-pub fn map(input: Vec<i32>, _function: ???) -> Vec<i32> {
-    unimplemented!("Transform input vector {:?} using passed function", input);
+pub fn map<A, B, F>(input: Vec<A>, function: F) -> Vec<B>
+where
+    F: FnMut(A) -> B,
+{
+    input.into_iter().map(function).collect::<Vec<B>>()
 }
