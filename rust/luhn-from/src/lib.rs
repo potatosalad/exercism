@@ -1,18 +1,42 @@
-pub struct Luhn;
+pub struct Luhn {
+    code: String,
+}
 
 impl Luhn {
     pub fn is_valid(&self) -> bool {
-        unimplemented!("Determine if the current Luhn struct contains a valid credit card number.");
+        let digits = self.code.chars().filter(|c| c.is_digit(10));
+        if !self
+            .code
+            .chars()
+            .all(|c| c.is_digit(10) || c.is_whitespace())
+            || digits.clone().count() <= 1
+        {
+            false
+        } else {
+            let sum: u32 = digits
+                .rev()
+                .map(|c| c.to_digit(10).unwrap())
+                .enumerate()
+                .map(|(i, x)| {
+                    if i % 2 == 0 {
+                        x
+                    } else {
+                        match x * 2 {
+                            y if y > 9 => y - 9,
+                            y => y,
+                        }
+                    }
+                })
+                .sum();
+            sum % 10 == 0
+        }
     }
 }
 
-/// Here is the example of how the From trait could be implemented
-/// for the &str type. Naturally, you can implement this trait
-/// by hand for the every other type presented in the test suite,
-/// but your solution will fail if a new type is presented.
-/// Perhaps there exists a better solution for this problem?
-impl<'a> From<&'a str> for Luhn {
-    fn from(input: &'a str) -> Self {
-        unimplemented!("From the given input '{}' create a new Luhn struct.", input);
+impl<T: ToString> From<T> for Luhn {
+    fn from(input: T) -> Self {
+        Luhn {
+            code: input.to_string(),
+        }
     }
 }
