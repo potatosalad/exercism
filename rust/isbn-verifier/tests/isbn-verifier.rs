@@ -1,4 +1,5 @@
 use isbn_verifier::is_valid_isbn;
+use isbn_verifier::isbn_10_to_isbn_13;
 
 #[test]
 fn test_valid() {
@@ -114,4 +115,27 @@ fn invalid_characters_are_not_ignored() {
 #[ignore]
 fn too_long_but_contains_a_valid_isbn() {
     assert!(!is_valid_isbn("98245726788"));
+}
+
+#[test]
+#[ignore]
+fn test_valid_isbn_13() {
+    assert!(is_valid_isbn("978-3-16-148410-0"));
+}
+
+#[test]
+#[ignore]
+fn test_isbn_10_to_isbn_13() {
+    assert_eq!(
+        isbn_10_to_isbn_13("3-598-21507-X").unwrap(),
+        "9783598215070"
+    );
+}
+
+#[test]
+#[ignore]
+fn test_valid_isbn_10_to_isbn_13() {
+    assert!(is_valid_isbn(
+        isbn_10_to_isbn_13("3-598-21507-X").unwrap().as_str()
+    ));
 }
