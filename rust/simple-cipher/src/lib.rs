@@ -30,14 +30,12 @@ fn shift(key: &str, text: &str, shift_fn: &Fn(u8, u8) -> u8) -> Option<String> {
     }
 }
 
-const BASE: u8 = ('a' as u32) as u8;
-
 fn shift_encode(c: u8, k: u8) -> u8 {
-    (c + k - 2 * BASE) % 26 + BASE
+    (c + k - 2 * b'a') % 26 + b'a'
 }
 
 fn shift_decode(c: u8, k: u8) -> u8 {
-    (c + 26 - k) % 26 + BASE
+    (c + 26 - k) % 26 + b'a'
 }
 
 struct Alphabetic;
