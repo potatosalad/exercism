@@ -1,29 +1,37 @@
-use std::marker::PhantomData;
+use std::collections::BTreeMap;
 
-pub struct CodonsInfo<'a> {
-    // This field is here to make the template compile and not to
-    // complain about unused type lifetime parameter "'a". Once you start
-    // solving the exercise, delete this field and the 'std::marker::PhantomData'
-    // import.
-    phantom: PhantomData<&'a ()>,
-}
+pub struct CodonsInfo<'a>(BTreeMap<&'a str, &'a str>);
 
 impl<'a> CodonsInfo<'a> {
     pub fn name_for(&self, codon: &str) -> Option<&'a str> {
-        unimplemented!(
-            "Return the protein name for a '{}' codon or None, if codon string is invalid",
-            codon
-        );
+        self.0.get(codon).cloned()
     }
 
     pub fn of_rna(&self, rna: &str) -> Option<Vec<&'a str>> {
-        unimplemented!("Return a list of protein names that correspond to the '{}' RNA string or None if the RNA string is invalid", rna);
+        let mut buffer = rna;
+        let mut names: Vec<&'a str> = Vec::new();
+        while let Some(name) = self.name_for(&buffer[..3]) {
+            if name == "stop codon" {
+                break;
+            }
+            buffer = &buffer[3..];
+            names.push(name);
+            if buffer.len() < 3 {
+                break;
+            }
+        }
+        if names.is_empty() {
+            None
+        } else {
+            Some(names)
+        }
     }
 }
 
 pub fn parse<'a>(pairs: Vec<(&'a str, &'a str)>) -> CodonsInfo<'a> {
-    unimplemented!(
-        "Construct a new CodonsInfo struct from given pairs: {:?}",
-        pairs
-    );
+    let mut btree: BTreeMap<&'a str, &'a str> = BTreeMap::new();
+    for (codon, name) in pairs {
+        btree.insert(codon, name);
+    }
+    CodonsInfo(btree)
 }
