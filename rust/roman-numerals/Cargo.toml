@@ -2,3 +2,6 @@
 edition = "2018"
 name = "roman-numerals"
 version = "1.0.0"
+
+[dependencies]
+lazy_static = "1.3.0"
