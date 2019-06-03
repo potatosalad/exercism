@@ -1,4 +1,3 @@
-
 use diamond::*;
 
 #[test]
@@ -26,15 +25,7 @@ fn test_c() {
 fn test_d() {
     assert_eq!(
         get_diamond('D'),
-        vec![
-            "   A   ",
-            "  B B  ",
-            " C   C ",
-            "D     D",
-            " C   C ",
-            "  B B  ",
-            "   A   ",
-        ]
+        vec!["   A   ", "  B B  ", " C   C ", "D     D", " C   C ", "  B B  ", "   A   ",]
     );
 }
 
