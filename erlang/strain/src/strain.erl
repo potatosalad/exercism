@@ -2,8 +2,8 @@
 
 -export([keep/2, discard/2]).
 
-keep(_Fn, _List) ->
-  undefined.
+keep(Fn, List) ->
+    [Element || Element <- List, Fn(Element)].
 
-discard(_Fn, _List) ->
-  undefined.
+discard(Fn, List) ->
+    [Element || Element <- List, not Fn(Element)].
