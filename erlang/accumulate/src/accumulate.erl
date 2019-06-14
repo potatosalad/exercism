@@ -2,5 +2,5 @@
 
 -export([accumulate/2]).
 
-accumulate(_Fn, _Ls) ->
-  undefined.
+accumulate(Fn, Ls) ->
+    [Fn(L) || L <- Ls].
