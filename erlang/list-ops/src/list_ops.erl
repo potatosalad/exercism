@@ -1,20 +1,54 @@
 -module(list_ops).
 
+-compile({no_auto_import, [length/1]}).
+
 -export([append/2, concat/1, filter/2, length/1, map/2, foldl/3, foldr/3,
-	 reverse/1]).
+         reverse/1]).
 
-append(_List1, _List2) -> undefined.
+append(List1, List2) ->
+	reverse(reverse(List1), List2).
 
-concat(_List) -> undefined.
+concat(List) ->
+	concat(List, []).
 
-filter(_Function, _List) -> undefined.
+%% @private
+concat([], Acc) ->
+	reverse(Acc);
+concat([[] | T2], Acc) ->
+	concat(T2, Acc);
+concat([[H | T1] | T2], Acc) ->
+	concat([T1 | T2], [H | Acc]).
 
-length(_List) -> undefined.
+filter(Function, List) ->
+	[Element || Element <- List, Function(Element)].
 
-map(_Function, _List) -> undefined.
+length([]) ->
+	0;
+length([_ | T]) ->
+	1 + length(T).
 
-foldl(_Function, _Start, _List) -> undefined.
+map(_Function, []) ->
+	[];
+map(Function, [H | T]) ->
+	[Function(H) | map(Function, T)].
 
-foldr(_Function, _Start, _List) -> undefined.
+foldl(_Function, Start, []) ->
+	Start;
+foldl(Function, Start, [H | T]) ->
+	foldl(Function, Function(H, Start), T).
 
-reverse(_List) -> undefined.
+foldr(_Function, Start, []) ->
+	Start;
+foldr(Function, Start, [H | T]) ->
+	Function(H, foldr(Function, Start, T)).
+
+reverse([]) ->
+	[];
+reverse([H | T]) ->
+	reverse(T, [H]).
+
+%% @private
+reverse([], Acc) ->
+	Acc;
+reverse([H | T], Acc) ->
+	reverse(T, [H | Acc]).
