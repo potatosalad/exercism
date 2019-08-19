@@ -17,5 +17,8 @@ ln -svf ../.gradle/gradlew
 ln -svf ../.gradle/gradlew.bat
 ln -svf ../.gradle/gradle
 
+git add .
+git commit -S -m "Add kotlin/${EXERCISE}"
+
 exit 0
 
